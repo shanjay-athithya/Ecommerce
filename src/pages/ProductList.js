@@ -9,7 +9,7 @@ const ProductList = ({ products, addToCart }) => {
         {products.map((product) => (
           <li key={product.id} className="border p-4 mb-2 rounded bg-red-300">
             <h2 className="text-lg font-semibold">{product.name}</h2>
-            <p className="text-gray-700">Price: ${product.price}</p>
+            <p className="text-gray-700">Price: Rs.{product.price}</p>
             <button
               onClick={() => addToCart(product, 1)} // Assuming default quantity is 1
               className="bg-blue-500 text-white px-4 py-2 mt-2 rounded"

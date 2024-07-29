@@ -15,7 +15,7 @@ const Cart = ({ cartItems, removeFromCart, updateQuantity }) => {
             {cartItems.map((item, index) => (
               <li key={item.id} className="border p-4 mb-2 rounded bg-red-300">
                 <h2 className="text-lg font-semibold">{item.name}</h2>
-                <p className="text-gray-700">Price per unit: ${item.price}</p>
+                <p className="text-gray-700">Price per unit: Rs. {item.price}</p>
                 <div className="flex items-center">
                   <button
                     onClick={() => updateQuantity(index, item.quantity - 1)}
@@ -32,7 +32,7 @@ const Cart = ({ cartItems, removeFromCart, updateQuantity }) => {
                     +
                   </button>
                 </div>
-                <p className="text-gray-700">Total: Rs{item.price * item.quantity}</p>
+                <p className="text-gray-700">Total: Rs. {item.price * item.quantity}</p>
                 <button
                   onClick={() => removeFromCart(index)}
                   className="bg-red-500 text-white px-4 py-2 mt-2 rounded"
