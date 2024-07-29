@@ -42,7 +42,7 @@ const Cart = ({ cartItems, removeFromCart, updateQuantity }) => {
               </li>
             ))}
           </ul>
-          <h2 className="text-lg font-semibold mt-4">Total Price: Rs{totalPrice.toFixed(2)}</h2>
+          <h2 className="text-lg font-semibold mt-4">Total Price: Rs. {totalPrice.toFixed(2)}</h2>
         </div>
       )}
       <Link to="/" className="mt-4 inline-block text-blue-500">Back to Products</Link>
