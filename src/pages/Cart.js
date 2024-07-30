@@ -1,11 +1,14 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
+import { CartContext } from '../App';
 
-const Cart = ({ cartItems, removeFromCart, updateQuantity }) => {
+const Cart = () => {
+  const { cartItems, removeFromCart, updateQuantity } = useContext(CartContext);
+
   const totalPrice = cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
 
   return (
-    <div className="p-4 ">
+    <div className="p-4">
       <h1 className="text-xl font-bold mb-4">Cart</h1>
       {cartItems.length === 0 ? (
         <p>Your cart is empty.</p>

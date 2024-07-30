@@ -1,16 +1,13 @@
-import React, { useState, useEffect, createContext } from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import ProductList from './pages/ProductList';
-import Cart from './pages/Cart';
+import React, { createContext, useState, useEffect } from 'react';
 
 // Create a Context for the cart
 export const CartContext = createContext();
 
-const App = () => {
+const CartProvider = ({ children }) => {
   const initialProducts = [
-    { id: 1, name: 'Apple', price: 10, quantity: 0 },
-    { id: 2, name: 'Banana', price: 20, quantity: 0 },
-    { id: 3, name: 'Halwa', price: 30, quantity: 0 }
+    { id: 1, name: 'Product 1', price: 10, quantity: 0 },
+    { id: 2, name: 'Product 2', price: 20, quantity: 0 },
+    { id: 3, name: 'Product 3', price: 30, quantity: 0 },
   ];
 
   const [products, setProducts] = useState(initialProducts);
@@ -18,6 +15,7 @@ const App = () => {
     const savedCart = sessionStorage.getItem('cartItems');
     return savedCart ? JSON.parse(savedCart) : [];
   });
+
   const [successMessage, setSuccessMessage] = useState('');
 
   useEffect(() => {
@@ -57,21 +55,19 @@ const App = () => {
       const updatedItems = [...prevItems];
       updatedItems[index] = {
         ...updatedItems[index],
-        quantity: Math.max(newQuantity, 1),
+        quantity: Math.max(newQuantity, 1), // Ensure quantity is at least 1
       };
       return updatedItems;
     });
 
-    setProducts((prevProducts) => {
-      const updatedProducts = prevProducts.map((product) => {
-        const cartItem = cartItems.find((item) => item.id === product.id);
-        if (cartItem) {
-          return { ...product, quantity: cartItem.quantity };
-        }
-        return product;
-      });
-      return updatedProducts;
+    const updatedProductList = [...products];
+    updatedProductList.forEach((product) => {
+      const cartItem = cartItems.find((item) => item.id === product.id);
+      if (cartItem) {
+        product.quantity = cartItem.quantity;
+      }
     });
+    setProducts(updatedProductList);
   };
 
   const showSuccessMessage = (message) => {
@@ -82,20 +78,12 @@ const App = () => {
   };
 
   return (
-    <CartContext.Provider value={{ products, cartItems, addToCart, removeFromCart, updateQuantity, successMessage }}>
-      <Router>
-        {successMessage && (
-          <div className="fixed top-0 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-4 py-2 rounded shadow-lg">
-            {successMessage}
-          </div>
-        )}
-        <Routes>
-          <Route path="/" element={<ProductList />} />
-          <Route path="/cart" element={<Cart />} />
-        </Routes>
-      </Router>
+    <CartContext.Provider
+      value={{ products, cartItems, addToCart, removeFromCart, updateQuantity, successMessage }}
+    >
+      {children}
     </CartContext.Provider>
   );
 };
 
-export default App;
+export default CartProvider;
